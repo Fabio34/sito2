@@ -1,9 +1,7 @@
 <?php
 	//connessione al database
-	$conn = mysql_pconnect("localhost", "root", "") or die('Connessione fallita: ' . mysql_error());//connessione al server MySQL
-	$Db = mysql_select_db("smartmuseum", $conn) or die('Connessione fallita: ' . mysql_error()); //seleziono il db
-
-
+	$conn = mysql_pconnect("localhost", "root", "");//connessione al server MySQL
+	$Db = mysql_select_db("smartmuseum", $conn); //seleziono il db
 
 	//Inserimento in tabella
 	//prende tutti i campi di un form e li inserisce in variabili

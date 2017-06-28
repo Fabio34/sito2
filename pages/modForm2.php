@@ -167,7 +167,7 @@ $html2= '
     </nav>
 
 	<section id=""> ';
-	echo $html2;
+		echo $html2;
 
 		$conn = mysql_pconnect("localhost", "root", "");
 		$db = mysql_select_db("smartmuseum", $conn);

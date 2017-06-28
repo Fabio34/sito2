@@ -1,13 +1,7 @@
 <?php
 $er = "";
 //connessione al database
-$conn = mysql_connect("localhost", "root", "");
-if(!$conn)
-{
-	die("Unable to connect to database" .mysql_error());
-	header("location: loginform.php");	//da modificare il percorso di redirect
-	exit();
-}
+$conn = mysql_pconnect("localhost", "root", "");
 $Db = mysql_select_db("smartmuseum", $conn);	//seleziono la tabella di riferimento
 
 //Inserimento in tabella
@@ -48,11 +42,7 @@ $Db = mysql_select_db("smartmuseum", $conn);	//seleziono la tabella di riferimen
 		'$Originale', '$Origini', '$NomeProprietario', '$IDProprietario', '$Descrizione')";
 
 	$res = mysql_query($query);	//inserimento nel db
-	if(!$res)	{//la query non viene eseguita
-		die("Unable to complete the query)" .mysql_error());
-		header("location: loginform.php");	//da modificare il percorso di redirect
-		exit();
-	}
+
 	if($FileV) {	//se è stato caricato un video eseguo la query
 				$ins_file = mysql_query("INSERT INTO multimedia VALUES ('', '$NumPassaporto', '$FileV')");
 	}

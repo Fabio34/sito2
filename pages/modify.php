@@ -1,12 +1,6 @@
 <?php
 	//$er = "";
 	$connect = mysql_pconnect("localhost", "root", "");
-if(!$connect) {
-	$warn= "<script type='text/javascript'>alert('Unable to reach the database');</script>";
-	echo $warn;
-	header("Refresh:0; URL=loginform.php");
-}
-
 	$db = mysql_select_db("smartmuseum", $connect);
 
 	//modifica di una tupla in tabella

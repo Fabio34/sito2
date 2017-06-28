@@ -16,7 +16,7 @@ if(isLoggedIn())
 $user = $_SESSION['email'];
 
 //connessione al server
-$conn = mysql_connect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
+$conn = mysql_pconnect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
 //selezione del database
 mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());
 

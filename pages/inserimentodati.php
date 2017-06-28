@@ -1,7 +1,7 @@
 <?php
 	//connessione al database
-	$conn = mysql_pconnect("localhost", "root", "") or die('Connessione fallita: ' . mysql_error());//connessione al server MySQL
-	$Db = mysql_select_db("smartmuseum", $conn) or die('Connessione fallita: ' . mysql_error()); //seleziono il db
+	$conn = mysql_pconnect("localhost", "root", "");//connessione al server MySQL
+	$Db = mysql_select_db("smartmuseum", $conn); //seleziono il db
 
 	//controllo che l'indirizzo email non sia gia presente
 	$Email = $_POST["Email"];
