@@ -13,12 +13,12 @@
 	$hash = hash('sha512', $password);
 
 	// query per il controllo di email e password
-	$query = "SELECT * FROM dipendente WHERE Email = '$email' and Password = '$hash'";
+	$query = sprintf("SELECT * FROM dipendente WHERE Email = '%s' and Password = '%s'",mysql_real_escape_string($email),mysql_real_escape_string($hash));
 	$results = mysql_query($query);
 	$number = mysql_num_rows($results);
 
 	// query per il controllo accesso admin
-	$query2 = "SELECT * FROM dipendente WHERE Email = '$email' and Password = '$hash' and isAdmin = '1'";
+	$query2 = sprintf("SELECT * FROM dipendente WHERE Email = '%s' and Password = '%s' and isAdmin = '1'",mysql_real_escape_string($email),mysql_real_escape_string($hash));
 	$results2 = mysql_query($query2);
 	$number2 = mysql_num_rows($results2);
 

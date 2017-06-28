@@ -19,8 +19,8 @@ if (isLoggedIn())
 	mysql_select_db('smartmuseum', $conn);
 
 	$value = $_SESSION['email'];
-
-	$query = "SELECT * FROM dipendente WHERE Email = '$value' and isAdmin = '1'";
+	
+	$query = sprintf("SELECT * FROM dipendente WHERE Email = '%s' and isAdmin = '1'",mysql_real_escape_string($value));
 	$results = mysql_query($query);
 	$number = mysql_num_rows($results);
 

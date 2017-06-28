@@ -1,30 +1,30 @@
 <?php
 	//$er = "";
-	$connect = mysql_pconnect("localhost", "root", "");
-	$db = mysql_select_db("smartmuseum", $connect);
+	$connect = mysql_pconnect('localhost', 'root', '');
+	$db = mysql_select_db('smartmuseum', $connect);
 
 	//modifica di una tupla in tabella
 	//if(isset($POST('invio')) {
 		//nel form ci saranno alcuni campi oscurati che non sono modificabili
 		//per il resto si tratta di un semplice inserimento sovrascrivendo il vecchio, in modo da non
 		//complicare l'algoritmo
-	$pass = $_POST["NumPassaporto"];
-	$Titolo = $_POST["Titolo"];
-	$Autore = $_POST["Autore"];
-	$Periodo = $_POST["Periodo"];
-	$Categoria = $_POST["Categoria"];
-	$Locazione = $_POST["Locazione"];
-	$Cultura = $_POST["Cultura"];
-	$Dominio = $_POST["Dominio"];
-	$Materiali = $_POST["Materiali"];
-	$Tecniche = $_POST["Tecniche"];
-	$Condizioni = $_POST["Condizioni"];
-	$Valore = $_POST["Valore"];
-	$Originale = $_POST["Originale"];
-	$Origini = $_POST["Origini"];
-	$NomeProprietario = $_POST["NomeProprietario"];
-	$IDProprietario = $_POST["IDProprietario"];
-	$Descrizione = $_POST["Descrizione"];
+	$pass = $_POST['NumPassaporto'];
+	$Titolo = $_POST['Titolo'];
+	$Autore = $_POST['Autore'];
+	$Periodo = $_POST['Periodo'];
+	$Categoria = $_POST['Categoria'];
+	$Locazione = $_POST['Locazione'];
+	$Cultura = $_POST['Cultura'];
+	$Dominio = $_POST['Dominio'];
+	$Materiali = $_POST['Materiali'];
+	$Tecniche = $_POST['Tecniche'];
+	$Condizioni = $_POST['Condizioni'];
+	$Valore = $_POST['Valore'];
+	$Originale = $_POST['Originale'];
+	$Origini = $_POST['Origini'];
+	$NomeProprietario = $_POST['NomeProprietario'];
+	$IDProprietario = $_POST['IDProprietario'];
+	$Descrizione = $_POST['Descrizione'];
 
 	//$Video = $_POST["FileVideo"];
 	//$Foto = $_POST["FileFoto"];
@@ -40,28 +40,33 @@
 	//se sono arrivato qui significa che sicuramente il reperto è presente nel database
 	//in quanto ho bloccato la modifica del Passaporto dal .php chiamante, dove effettuo di già un controllo
 	//sul Passaporto;
-	$update = "UPDATE reperto SET
-		Titolo = '$Titolo',
-		Autore = '$Autore',
-		Periodo = '$Periodo',
-		Categoria = '$Categoria',
-		Locazione = '$Locazione',
-		Cultura = '$Cultura',
-		Dominio = '$Dominio',
-		Materiali = '$Materiali',
-		Tecniche = '$Tecniche',
-		Condizioni = '$Condizioni',
-		Valore = '$Valore',
-		Originale = '$Originale',
-		Origini = '$Origini',
-		NomeProprietario = '$NomeProprietario',
-		IDProprietario = '$IDProprietario',
-		Descrizione = '$Descrizione'
-		WHERE '$pass' = NumPassaporto ";
+	$update = sprintf("UPDATE reperto SET
+		Titolo = '%s',
+		Autore = '%s',
+		Periodo = '%s',
+		Categoria = '%s',
+		Locazione = '%s',
+		Cultura = '%s',
+		Dominio = '%s',
+		Materiali = '%s',
+		Tecniche = '%s',
+		Condizioni = '%s',
+		Valore = '%s',
+		Originale = '%s',
+		Origini = '%s',
+		NomeProprietario = '%s',
+		IDProprietario = '%u',
+		Descrizione = '%s'
+		WHERE '%s' = NumPassaporto ",
+		mysql_real_escape_string($Titolo),mysql_real_escape_string($Autore),mysql_real_escape_string($Periodo),mysql_real_escape_string($Categoria),
+		mysql_real_escape_string($Locazione),mysql_real_escape_string($Cultura),mysql_real_escape_string($Dominio),mysql_real_escape_string($Materiali),
+		mysql_real_escape_string($Tecniche),mysql_real_escape_string($Condizioni),mysql_real_escape_string($Valore),mysql_real_escape_string($Originale),
+		mysql_real_escape_string($Origini),mysql_real_escape_string($NomeProprietario),mysql_real_escape_string($IDProprietario),mysql_real_escape_string($Descrizione),
+		mysql_real_escape_string($pass));
 
 	$res = mysql_query($update);
 
-	if(!$res)
+	if(!isset($res))
 	{
 		$prt= "<script type='text/javascript'>alert('Errore nella query');</script>";
 		echo $prt;

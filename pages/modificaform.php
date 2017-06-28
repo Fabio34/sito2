@@ -20,7 +20,7 @@ $conn = mysql_pconnect('localhost', 'root', '');
 //selezione del database
 mysql_select_db('smartmuseum', $conn);
 
-$query = "SELECT Email FROM dipendente WHERE Email = '$user' and isAdmin = '1'";
+$query = sprintf("SELECT Email FROM dipendente WHERE Email = '%s' and isAdmin = '1'",mysql_real_escape_string($user));
 $results = mysql_query($query);
 $number = mysql_num_rows($results);
 
@@ -28,7 +28,7 @@ $number = mysql_num_rows($results);
 mysql_close($conn);
 }
 
-if (!isLoggedIn() || $number == 0)
+if (!isLoggedIn() || !isset($number) || $number == 0)
 {
 	session_destroy();
 	$html= '
@@ -190,11 +190,12 @@ echo $html;
 	<div id="divform">';
 	echo $html2;
 
-		$conn = mysql_pconnect("localhost", "root", "");
-		$db = mysql_select_db("smartmuseum", $conn);
+		$conn = mysql_pconnect('localhost', 'root', '');
+		$db = mysql_select_db('smartmuseum', $conn);
 
 		$id = $_POST["ID"];
-		$ParzRes = mysql_query("SELECT * from dipendente where '$id' = IDdip");
+		$query_di_aiuto = sprintf("SELECT * from dipendente where '%s' = IDdip",mysql_real_escape_string($id));
+		$ParzRes = mysql_query($query_di_aiuto);
 		$trovato = mysql_num_rows($ParzRes);
 		if($trovato == 0) { echo "<script type='text/javascript'>alert('Dipendente non trovato');</script>";
 							header('Refresh:0; URL=inputdip.php');}
@@ -208,7 +209,7 @@ echo $html;
 		<form method = "POST" name = "modulo">
 
 			<input type="hidden" name="Nascosto" value="1">
-			IDDipendente: '; echo htmlspecialchars($res[0])."\n\n"; echo '
+			IDDipendente: '; echo htmlspecialchars($res[0]),'\n\n'; echo '
 			<input type="text" name = "ID"  value = '; echo htmlspecialchars($res[0]); echo ' style="display:none";>
 			<br><br>
 			Nome <input type="text" name = "Nome" value = '; echo htmlspecialchars($res[1]); echo ' style= "color: #1D1D1D">

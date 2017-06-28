@@ -173,7 +173,8 @@ $html2= '
 		$db = mysql_select_db("smartmuseum", $conn);
 
 		$pass = $_POST["NumPassaporto"];
-		$ParzRes = mysql_query("SELECT * from reperto where '$pass' = NumPassaporto");
+		$query_di_aiuto = sprintf("SELECT * from reperto where '%s' = NumPassaporto",mysql_real_escape_string($pass));
+		$ParzRes = mysql_query($query_di_aiuto);
 		$trovato = mysql_num_rows($ParzRes);
 		if($trovato == 0) {
 			 $str= "<script type='text/javascript'>alert('Reperto non trovato!');</script>";

@@ -16,11 +16,11 @@ if(isLoggedIn())
 $user = $_SESSION['email'];
 
 //connessione al server
-$conn = mysql_pconnect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
+$conn = mysql_pconnect('localhost', 'root', '');
 //selezione del database
-mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());
+mysql_select_db('smartmuseum', $conn);
 
-$query = "SELECT Email FROM dipendente WHERE Email = '$user' and isAdmin = '1'";
+$query = sprintf("SELECT Email FROM dipendente WHERE Email = '%s' and isAdmin = '1'",mysql_real_escape_string($user));
 $results = mysql_query($query);
 $number = mysql_num_rows($results);
 
@@ -28,7 +28,7 @@ $number = mysql_num_rows($results);
 mysql_close($conn);
 }
 
-if (!isLoggedIn() || $number == 0)
+if (!isLoggedIn() || !isset($number) || $number == 0)
 {
 	session_destroy();
 	$print = '
