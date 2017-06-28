@@ -36,7 +36,8 @@ $Db = mysql_select_db("smartmuseum", $conn);	//seleziono la tabella di riferimen
 	//controllo che non sia già presente in tabella
 	if(mysql_num_rows( mysql_query("SELECT NumPassaporto FROM reperto WHERE '$NumPassaporto' = reperto.NumPassaporto") ) != 0 )
 	{
-		echo "<script type='text/javascript'>alert('Passaporto già presente');</script>";
+		$string = "<script type='text/javascript'>alert('Passaporto già presente');</script>";
+		echo $string;
 		header("Refresh:0; URL=loginform.php");
 	}
 
@@ -60,5 +61,5 @@ $Db = mysql_select_db("smartmuseum", $conn);	//seleziono la tabella di riferimen
 	}
 
 mysql_close($conn);	//Disconnessione dal database
-exit();
+header('Location: reperti.php')
 ?>

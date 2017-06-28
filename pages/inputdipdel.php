@@ -8,7 +8,7 @@ function isLoggedIn()
 	} else
 	{
 		return false;
-	}	
+	}
 }
 
 if(isLoggedIn())
@@ -16,9 +16,9 @@ if(isLoggedIn())
 $user = $_SESSION['email'];
 
 //connessione al server
-$conn = mysql_connect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
+$conn = mysql_pconnect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
 //selezione del database
-mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());		
+mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());
 
 $query = "SELECT Email FROM dipendente WHERE Email = '$user' and isAdmin = '1'";
 $results = mysql_query($query);
@@ -28,7 +28,7 @@ $number = mysql_num_rows($results);
 if (!isLoggedIn() || $number == 0)
 {
 	session_destroy();
-	echo '
+	$html = '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,14 +37,14 @@ if (!isLoggedIn() || $number == 0)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel=\'shortcut icon\' type=\'image/x-icon\' href=\'../img/favicon.ico\' />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -52,26 +52,26 @@ if (!isLoggedIn() || $number == 0)
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
-	
+
 	<style>
 		#repButton
 		{
 			margin: 10px;
 		}
-		
+
 		#dipButton
 		{
 			margin: 10px;
 		}
-		
+
 		#welcome
 		{
 			color: #F05F40;
 		}
-		
+
 		#divback
 		{
 			text-align: center;
@@ -90,19 +90,20 @@ if (!isLoggedIn() || $number == 0)
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section>
 		<p align="center">You are not authorized to access the following page.</p>
 		<div id="divback">
 			<a href = "../index.html" id="backhome">Home</a>
 		</div>
-		
+
     </section>
 </body>
 </html> ';
+echo $html;
 } else
-{ 
-echo '
+{
+$html2 = '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,14 +112,14 @@ echo '
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -126,13 +127,13 @@ echo '
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
 	<link href="../css/metro.css" rel="stylesheet">
 	<link href="../css/metro-icons.css" rel="stylesheet">
     <link href="../css/metro-responsive.css" rel="stylesheet">
-	
+
 	<script src="../js/jquery-2.1.3.min.js"></script>
 	<script src="../js/jquery.dataTables.min.js"></script>
 	<script src="../js/metro.js"></script>
@@ -146,25 +147,25 @@ echo '
 		  else
 			return false;
 		}
-	</script> 
-	
+	</script>
+
 	<style>
 
 		#table
 		{
 			background-color: #F2F2F2;
 		}
-		
+
 		#dato
 		{
 			color: #1D1D1D;
 		}
-		
+
 		#divform
 		{
 			text-align: center;
 		}
-		
+
 		#NumPassaporto
 		{
 			color: #1D1D1D;
@@ -201,14 +202,14 @@ echo '
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section id="">
 	<div id="divform">
 		<form method = "POST" action = "Eliminadip.php">
 
 		Inserisci l\'ID del dipendente da eliminare: <input type="name" name = "ID" style="color: #1D1D1D">
 		<br>
-		
+
 		<input class="button alert" id="button" type="submit" Onclick="return ConfirmDelete();" value="Elimina">
 
 	</form>
@@ -228,5 +229,6 @@ echo '
     <script src="../js/creative.min.js"></script>
 </body>
 </html> ';
+echo $html2;
 }
 ?>

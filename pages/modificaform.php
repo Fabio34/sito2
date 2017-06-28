@@ -8,7 +8,7 @@ function isLoggedIn()
 	} else
 	{
 		return false;
-	}	
+	}
 }
 
 if(isLoggedIn())
@@ -16,9 +16,9 @@ if(isLoggedIn())
 $user = $_SESSION['email'];
 
 //connessione al server
-$conn = mysql_connect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
+$conn = mysql_pconnect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
 //selezione del database
-mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());		
+mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());
 
 $query = "SELECT Email FROM dipendente WHERE Email = '$user' and isAdmin = '1'";
 $results = mysql_query($query);
@@ -31,7 +31,7 @@ mysql_close($conn);
 if (!isLoggedIn() || $number == 0)
 {
 	session_destroy();
-	echo '
+	$html= '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,14 +40,14 @@ if (!isLoggedIn() || $number == 0)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel=\'shortcut icon\' type=\'image/x-icon\' href=\'../img/favicon.ico\' />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -55,26 +55,26 @@ if (!isLoggedIn() || $number == 0)
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
-	
+
 	<style>
 		#repButton
 		{
 			margin: 10px;
 		}
-		
+
 		#dipButton
 		{
 			margin: 10px;
 		}
-		
+
 		#welcome
 		{
 			color: #F05F40;
 		}
-		
+
 		#divback
 		{
 			text-align: center;
@@ -93,20 +93,21 @@ if (!isLoggedIn() || $number == 0)
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section id="">
 		<p align="center">You are not authorized to access the following page.</p>
 		<div id="divback">
 			<a href = "../index.html" id="backhome">Home</a>
 		</div>
-		
+
     </section>
 </body>
 </html> ';
+echo $html;
 }
  else
  {
-	echo '
+	$html2= '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,14 +116,14 @@ if (!isLoggedIn() || $number == 0)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel=\'shortcut icon\' type=\'image/x-icon\' href=\'../img/favicon.ico\' />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -130,28 +131,28 @@ if (!isLoggedIn() || $number == 0)
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
-	
+
 	<script src="../js/Controlli.js"></script>
-	
+
 	<style>
-		
+
 		#dipButton
 		{
 			margin: 10px;
 		}
-		
+
 		#divform
 		{
 			margin-left: 10px;
 		}
-		
+
 		#button
 		{
 			background-color: #F05F40;
-		}	
+		}
 	</style>
 </head>
 
@@ -165,7 +166,7 @@ if (!isLoggedIn() || $number == 0)
                 </button>
                 <a class="navbar-brand page-scroll" href="../index.html">Smart museum</a>
             </div>
-			
+
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
 					<li>
@@ -179,55 +180,56 @@ if (!isLoggedIn() || $number == 0)
 					</li>
                 </ul>
             </div>
-			
+
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section id="">
 	<div id="divform">';
+	echo $html2;
 
-		$conn = mysql_connect("localhost", "root", "");
+		$conn = mysql_pconnect("localhost", "root", "");
 		$db = mysql_select_db("smartmuseum", $conn);
 
 		$id = $_POST["ID"];
 		$ParzRes = mysql_query("SELECT * from dipendente where '$id' = IDdip");
-		$trovato = mysql_num_rows($ParzRes); 
+		$trovato = mysql_num_rows($ParzRes);
 		if($trovato == 0) { echo "<script type='text/javascript'>alert('Dipendente non trovato');</script>";
 							header('Refresh:0; URL=inputdip.php');}
-		
-		$res = mysql_fetch_row($ParzRes);
+
+		$res = htmlspecialchars(mysql_fetch_row($ParzRes));
 
 		mysql_close($conn);
-		
-		echo '
+
+		$html3= '
 
 		<form method = "POST" name = "modulo">
-		
+
 			<input type="hidden" name="Nascosto" value="1">
-			IDDipendente: '; echo $res[0]."\n\n"; echo '
-			<input type="text" name = "ID"  value = '; echo $res[0]; echo ' style="display:none";>
+			IDDipendente: '; echo htmlspecialchars($res[0])."\n\n"; echo '
+			<input type="text" name = "ID"  value = '; echo htmlspecialchars($res[0]); echo ' style="display:none";>
 			<br><br>
-			Nome <input type="text" name = "Nome" value = '; echo $res[1]; echo ' style= "color: #1D1D1D">
-			Cognome <input type="text" name = "Cognome" value ='; echo $res[2]; echo ' style= "color: #1D1D1D">
+			Nome <input type="text" name = "Nome" value = '; echo htmlspecialchars($res[1]); echo ' style= "color: #1D1D1D">
+			Cognome <input type="text" name = "Cognome" value ='; echo htmlspecialchars($res[2]); echo ' style= "color: #1D1D1D">
 			<br><br>
-			Data di Nascita <input type="text" name = "DataNascita" value = '; echo $res[3]; echo ' style= "color: #1D1D1D">
+			Data di Nascita <input type="text" name = "DataNascita" value = '; echo htmlspecialchars($res[3]); echo ' style= "color: #1D1D1D">
 			<br><br>
-			Città <input type="text" name = "Citta" value = '; echo $res[4]; echo ' style= "color: #1D1D1D">
-			Sesso <select name = "Sesso" value = '; echo $res[5]; echo ' style= "color: #1D1D1D">
-					<option value="M" '; if ($res[5] == "M") echo "selected='selected'"; echo '> M </option> 
+			Città <input type="text" name = "Citta" value = '; echo htmlspecialchars($res[4]); echo ' style= "color: #1D1D1D">
+			Sesso <select name = "Sesso" value = '; echo htmlspecialchars($res[5]); echo ' style= "color: #1D1D1D">
+					<option value="M" '; if ($res[5] == "M") echo "selected='selected'"; echo '> M </option>
 					<option value="F" '; if ($res[5] == "F") echo "selected='selected'"; echo '> F </option>
-			</select> 
-			
-			
+			</select>
+
+
 			<br><br>
-			Codice Fiscale <input type="text" name = "CodiceFiscale" value = '; echo $res[6]; echo ' style= "color: #1D1D1D">
+			Codice Fiscale <input type="text" name = "CodiceFiscale" value = '; echo htmlspecialchars($res[6]); echo ' style= "color: #1D1D1D">
 			<br><br>
-			Email <input type="text" name = "Email" value = '; echo $res[7]; echo ' style= "color: #1D1D1D">
-			Password <input type="password" name = "Password" value = '; echo $res[8]; echo ' style= "color: #1D1D1D">
-			  Conferma <input type="password" name = "Conferma" value = '; echo $res[8]; echo' style= "color: #1D1D1D">
-			<br><br> 
+			Email <input type="text" name = "Email" value = '; echo htmlspecialchars($res[7]); echo ' style= "color: #1D1D1D">
+			Password <input type="password" name = "Password" value = '; echo htmlspecialchars($res[8]); echo ' style= "color: #1D1D1D">
+			  Conferma <input type="password" name = "Conferma" value = '; echo htmlspecialchars($res[8]); echo' style= "color: #1D1D1D">
+			<br><br>
 			<input class="button alert" id="button" type="button" value="Invia" onClick="Modulo()">
 		</form>
 	</div>
@@ -242,5 +244,6 @@ if (!isLoggedIn() || $number == 0)
     <script src="../js/creative.min.js"></script>
 </body>
 </html> ';
+echo $html3;
  }
 ?>

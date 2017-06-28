@@ -8,7 +8,7 @@ function isLoggedIn()
 	} else
 	{
 		return false;
-	}	
+	}
 }
 
 if(isLoggedIn())
@@ -16,9 +16,9 @@ if(isLoggedIn())
 $user = $_SESSION['email'];
 
 //connessione al server
-$conn = mysql_connect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
+$conn = mysql_pconnect('localhost', 'root', '') or die('Connection failed: ' .mysql_error());
 //selezione del database
-mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());		
+mysql_select_db('smartmuseum', $conn) or die('Connection failed: ' .mysql_error());
 
 $query = "SELECT Email FROM dipendente WHERE Email = '$user' and isAdmin = '1'";
 $results = mysql_query($query);
@@ -28,7 +28,7 @@ $number = mysql_num_rows($results);
 if (!isLoggedIn() || $number == 0)
 {
 	session_destroy();
-	echo '
+	$html= '
 	<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,14 +37,14 @@ if (!isLoggedIn() || $number == 0)
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel=\'shortcut icon\' type=\'image/x-icon\' href=\'../img/favicon.ico\' />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -52,26 +52,26 @@ if (!isLoggedIn() || $number == 0)
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
-	
+
 	<style>
 		#repButton
 		{
 			margin: 10px;
 		}
-		
+
 		#dipButton
 		{
 			margin: 10px;
 		}
-		
+
 		#welcome
 		{
 			color: #F05F40;
 		}
-		
+
 		#divback
 		{
 			text-align: center;
@@ -90,19 +90,20 @@ if (!isLoggedIn() || $number == 0)
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section id="">
 		<p align="center">You are not authorized to access the following page.</p>
 		<div id="divback">
 			<a href = "../index.html" id="backhome">Home</a>
 		</div>
-		
+
     </section>
 </body>
 </html> ';
+echo $html;
 } else
 {
-echo '
+$html2= '
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,14 +112,14 @@ echo '
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-	
+
 	<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.ico" />
-	
+
 	<title>Employee management</title>
-	
+
     <!-- Bootstrap Core CSS -->
     <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
+
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -127,13 +128,13 @@ echo '
 
 	<!-- Plugin CSS -->
     <link href="../vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-	
+
 	<!-- Theme CSS -->
     <link href="../css/creative.min.css" rel="stylesheet">
 	<link href="../css/metro.css" rel="stylesheet">
 	<link href="../css/metro-icons.css" rel="stylesheet">
     <link href="../css/metro-responsive.css" rel="stylesheet">
-	
+
 	<script src="../js/jquery-2.1.3.min.js"></script>
 	<script src="../js/jquery.dataTables.min.js"></script>
 	<script src="../js/metro.js"></script>
@@ -151,12 +152,12 @@ echo '
 		{
 			background-color: #F2F2F2;
 		}
-		
+
 		#dato
 		{
 			color: #1D1D1D;
 		}
-		
+
 		#divtable
 		{
 			margin: 20px;
@@ -193,18 +194,18 @@ echo '
         </div>
         <!-- /.container-fluid -->
     </nav>
-	
+
 	<section id="">
-		<div id="divtable">		               
+		<div id="divtable">
                     <h1 class="text-light" align="center">Employees</h1>
                     <hr class="thin bg-grayLighter">
-                    <a href="formdipendente.php"><button class="button alert" id="button"></span>New</button></a>       
+                    <a href="formdipendente.php"><button class="button alert" id="button"></span>New</button></a>
                     <a href="inputdip.php"><button class="button alert" id="button"></span>Modify</button></a>
                     <a href="inputdipdel.php"><button class="button alert" id="button"></span>Delete</button></a>
-					
-					<table class="dataTable border bordered" data-role="datatable" data-auto-width="false" id="table"> 
+
+					<table class="dataTable border bordered" data-role="datatable" data-auto-width="false" id="table">
 					    <thead>
-                        <tr>                         						
+                        <tr>
                             <td class="sortable-column">ID</td>
 							<td class="sortable-column">Name</td>
 							<td class="sortable-column">Surname</td>
@@ -217,26 +218,37 @@ echo '
 							<td class="sortable-column">Admin</td>
                         </tr>
                         </thead>';
+												echo $html2;
 
-						$query = mysql_query("SELECT * FROM dipendente"); 
+						$query = mysql_query("SELECT * FROM dipendente");
 						while($cicle=mysql_fetch_array($query)){
-							
-							echo "<tr><td id='dato'>".$cicle['IDDip']."</td>";
-							echo "<td id='dato'>".$cicle['Nome']."</td>";
-							echo "<td id='dato'>".$cicle['Cognome']."</td>";
-							echo "<td id='dato'>".$cicle['DataNascita']."</td>";
-							echo "<td id='dato'>".$cicle['Citta']."</td>";
-							echo "<td id='dato'>".$cicle['Sesso']."</td>";
-							echo "<td id='dato'>".$cicle['CodiceFiscale']."</td>";
-							echo "<td id='dato'>".$cicle['Email']."</td>";
-							echo "<td id='dato'>".$cicle['Password']."</td>";
-							echo "<td id='dato'>".$cicle['isAdmin']."</td></tr>";						
+
+							$v1= "<tr><td id='dato'>".htmlspecialchars($cicle['IDDip'])."</td>";
+							echo $v1;
+							$v2= "<td id='dato'>".htmlspecialchars($cicle['Nome'])."</td>";
+							echo $v2;
+							$v3= "<td id='dato'>".htmlspecialchars($cicle['Cognome'])."</td>";
+							echo $v3;
+							$v4= "<td id='dato'>".htmlspecialchars($cicle['DataNascita'])."</td>";
+							echo $v4;
+							$v5= "<td id='dato'>".htmlspecialchars($cicle['Citta'])."</td>";
+							echo $v5;
+							$v6= "<td id='dato'>".htmlspecialchars($cicle['Sesso'])."</td>";
+							echo $v6;
+							$v7= "<td id='dato'>".htmlspecialchars($cicle['CodiceFiscale'])."</td>";
+							echo $v7;
+							$v8= "<td id='dato'>".htmlspecialchars($cicle['Email'])."</td>";
+							echo $v8;
+							$v9= "<td id='dato'>".htmlspecialchars($cicle['Password'])."</td>";
+							echo $v9;
+							$v10= "<td id='dato'>".htmlspecialchars($cicle['isAdmin'])."</td></tr>";
+							echo $v10;
 						}
-						
+
 						//Disconnessione dal database
 						mysql_close($conn);
-						
-						echo '
+
+						$html3= '
 					</table>
 		</div>
     </section>
@@ -255,5 +267,6 @@ echo '
     <script src="../js/creative.min.js"></script>
 </body>
 </html> ';
+echo $html3;
 }
 ?>

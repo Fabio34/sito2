@@ -1,8 +1,9 @@
 <?php
 	//$er = "";
-	$connect = mysql_connect("localhost", "root", "");
+	$connect = mysql_pconnect("localhost", "root", "");
 if(!$connect) {
-	echo "<script type='text/javascript'>alert('Unable to reach the database');</script>";
+	$warn= "<script type='text/javascript'>alert('Unable to reach the database');</script>";
+	echo $warn;
 	header("Refresh:0; URL=loginform.php");
 }
 
@@ -68,11 +69,13 @@ if(!$connect) {
 
 	if(!$res)
 	{
-		echo "<script type='text/javascript'>alert('Errore nella query');</script>";
+		$prt= "<script type='text/javascript'>alert('Errore nella query');</script>";
+		echo $prt;
 		header("Refresh:0; URL=loginform.php");
-	}else 
+	}else
 	{
-		echo "<script type='text/javascript'>alert('Reperto modificato');</script>";
+		$prt2= "<script type='text/javascript'>alert('Reperto modificato');</script>";
+		echo $prt2;
 		header("Refresh:0; URL=loginform.php");
 	}
 
@@ -82,5 +85,5 @@ if(!$connect) {
 */
 
 	mysql_close($connect);
-	exit();
+	header("Refresh:0; URL=dipendente.php");
 ?>
